@@ -11,13 +11,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _isObscured = true;
+  final bool _isObscured = true;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      //backgroundColor: Colors.blueGrey,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(24.0),
@@ -58,6 +58,37 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 24),
+                    TextFormField(
+                      validator: validateContractName,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      decoration: InputDecoration(
+                        fillColor: Colors.cyan,
+                        border: OutlineInputBorder(),
+                        hintText: "Vertragsname",
+                      ),
+                    ),
+                    SizedBox(height: 24),
+                    TextFormField(
+                      validator: validateCost,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      decoration: InputDecoration(
+                        fillColor: Colors.cyan,
+                        border: OutlineInputBorder(),
+                        hintText: "Kostenangabe",
+                      ),
+                    ),
+                    SizedBox(height: 24),
+                    TextFormField(
+                      validator: validateAge,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      decoration: InputDecoration(
+                        fillColor: Colors.cyan,
+                        border: OutlineInputBorder(),
+                        hintText: "Altersangabe",
+                      ),
+                    ),
+                    SizedBox(height: 24),
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
@@ -85,45 +116,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              Row(
-                spacing: 16,
-                children: [
-                  Expanded(
-                      child: Divider(
-                    color: Colors.white,
-                  )),
-                  Text("Oder mit"),
-                  Expanded(
-                      child: Divider(
-                    color: Colors.white,
-                  )),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  FilledButton.icon(
-                      onPressed: () {},
-                      label: Center(
-                        child: Row(children: [
-                          Icon(Icons.apple),
-                          //Text("Login with Apple")
-                        ]),
-                      )),
-                  FilledButton(
-                      onPressed: () {},
-                      child: Center(
-                        child: Row(
-                          spacing: 4,
-                          children: [
-                            Icon(Icons.facebook),
-                            //Text("Login with Facebook")
-                          ],
-                        ),
-                      )),
-                ],
-              ),
               Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -148,5 +140,58 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  String? validateContractName(String? userInput) {
+    if (userInput == null || userInput.isEmpty) {
+      return "Bitte Vertragsnamen eingeben";
+    }
+    if (userInput.length < 3) {
+      return "Vertragsname muss mindestens 3 Zeichen lang sein";
+    }
+    if (userInput.length > 20) {
+      return "Vertragsname darf maximal 20 Zeichen lang sein";
+    }
+    return null;
+  }
+
+  String? validateCost(String? userInput) {
+    if (userInput == null || userInput.isEmpty) {
+      return "Bitte Kostenangabe eingeben";
+    }
+    if (double.tryParse(userInput) == null) {
+      return "Bitte eine gültige Zahl eingeben";
+    }
+    if (double.parse(userInput) < 0) {
+      return "Bitte eine positive Zahl eingeben";
+    }
+    if (userInput.contains(" ")) {
+      return "Bitte keine Leerzeichen verwenden";
+    }
+    if (userInput.contains(",")) {
+      return "Bitte Punkt statt Komm verwenden";
+    }
+
+    return null;
+  }
+
+  String? validateAge(String? userInput) {
+    if (userInput == null || userInput.isEmpty) {
+      return "Bitte Altersangabe eingeben";
+    }
+    if (int.tryParse(userInput) == null) {
+      return "Bitte eine gültige Zahl eingeben";
+    }
+    if (int.parse(userInput) < 0) {
+      return "Bitte eine positive Zahl eingeben";
+    }
+    if (int.parse(userInput) > 120) {
+      return "Bitte eine Zahl kleiner als 120 eingeben";
+    }
+    if (userInput.length > 3) {
+      return "Bitte keine mehr als 3 Ziffern eingeben";
+    }
+
+    return null;
   }
 }
