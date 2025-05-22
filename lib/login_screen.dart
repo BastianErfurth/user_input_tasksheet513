@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:user_input_tasksheet513/text_form_field.dart';
 import 'package:user_input_tasksheet513/text_form_field_icon.dart';
-import 'package:user_input_tasksheet513/zweiter_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +13,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final bool _isObscured = true;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  bool _isButtonDisable = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,114 +22,115 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(24.0),
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              Text("Willkommen !", style: TextStyle(color: Colors.white)),
-              SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: Form(
+            onChanged: () {
+              setState(() {
+                final bool isFormValid = formKey.currentState!.validate();
+                _isButtonDisable = !isFormValid!;
+              });
+            },
+            key: formKey,
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                Text("Willkommen !", style: TextStyle(color: Colors.white)),
+                SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormFieldWithoutIcon(
+                        controller: _emailController,
+                        labelText: "Email",
+                        hintText: "Emailadresse eingeben",
+                      ),
+                      SizedBox(height: 24),
+                      TextFieldWithIcon(
+                        controller: _passwordController,
+                        labelText: "Passwort",
+                        hintText: "Passwort eingeben",
+                        iconButton: IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            _isObscured
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
+                        obscureText: _isObscured,
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: const Text("Passwort vergessen?"),
+                        ),
+                      ),
+                      SizedBox(height: 24),
+                      TextFormField(
+                        validator: validateContractName,
+                        autovalidateMode: AutovalidateMode.onUnfocus,
+                        decoration: InputDecoration(
+                          fillColor: Colors.cyan,
+                          border: OutlineInputBorder(),
+                          hintText: "Vertragsname",
+                        ),
+                      ),
+                      SizedBox(height: 24),
+                      TextFormField(
+                        validator: validateCost,
+                        autovalidateMode: AutovalidateMode.onUnfocus,
+                        decoration: InputDecoration(
+                          fillColor: Colors.cyan,
+                          border: OutlineInputBorder(),
+                          hintText: "Kostenangabe",
+                        ),
+                      ),
+                      SizedBox(height: 24),
+                      TextFormField(
+                        validator: validateAge,
+                        autovalidateMode: AutovalidateMode.onUnfocus,
+                        decoration: InputDecoration(
+                          fillColor: Colors.cyan,
+                          border: OutlineInputBorder(),
+                          hintText: "Altersangabe",
+                        ),
+                      ),
+                      SizedBox(height: 24),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _isButtonDisable
+                              ? null
+                              : () {
+                                  final bool isFormValid = formKey.currentState!
+                                      .validate();
+                                  if (isFormValid) {
+                                    // Perform login action
+                                    print("Login successful");
+                                  } else {
+                                    print("Login failed");
+                                  }
+                                },
+                          child: const Text("Login"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 8,
                   children: [
-                    TextFormFieldWithoutIcon(
-                      controller: _emailController,
-                      labelText: "Email",
-                      hintText: "Emailadresse eingeben",
-                    ),
-                    SizedBox(height: 24),
-                    TextFieldWithIcon(
-                      controller: _passwordController,
-                      labelText: "Passwort",
-                      hintText: "Passwort eingeben",
-                      iconButton: IconButton(
-                        onPressed: () {},
-                        icon: Icon(_isObscured
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                      ),
-                      obscureText: _isObscured,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Passwort vergessen?",
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 24),
-                    TextFormField(
-                      validator: validateContractName,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      decoration: InputDecoration(
-                        fillColor: Colors.cyan,
-                        border: OutlineInputBorder(),
-                        hintText: "Vertragsname",
-                      ),
-                    ),
-                    SizedBox(height: 24),
-                    TextFormField(
-                      validator: validateCost,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      decoration: InputDecoration(
-                        fillColor: Colors.cyan,
-                        border: OutlineInputBorder(),
-                        hintText: "Kostenangabe",
-                      ),
-                    ),
-                    SizedBox(height: 24),
-                    TextFormField(
-                      validator: validateAge,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      decoration: InputDecoration(
-                        fillColor: Colors.cyan,
-                        border: OutlineInputBorder(),
-                        hintText: "Altersangabe",
-                      ),
-                    ),
-                    SizedBox(height: 24),
-                    SizedBox(
-                      width: double.infinity,
-                      child: FilledButton(
-                        onPressed: () {
-                          print("Login Button pressed");
-                          print(_emailController.text);
-                          print(_passwordController.text);
-                          if (_emailController.text == "Max@web.de" &&
-                              _passwordController.text == "123456") {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ZweiterScreen(),
-                            ));
-                          } else {
-                            print("fehlerhafte Eingabe");
-                            _emailController.clear();
-                            _passwordController.clear();
-                          }
-                        },
-                        child: const Text(
-                          "Login",
-                        ),
-                      ),
-                    ),
+                    const Text("Noch kein Konto?"),
+                    TextButton(onPressed: () {}, child: Text("Registrieren")),
                   ],
                 ),
-              ),
-              SizedBox(height: 20),
-              Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 8,
-                children: [
-                  const Text("Noch kein Konto?"),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text("Registrieren"),
-                  ),
-                ],
-              )
-            ],
+              ],
+            ),
           ),
         ),
       ),
