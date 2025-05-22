@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
             onChanged: () {
               setState(() {
                 final bool isFormValid = formKey.currentState!.validate();
-                _isButtonDisable = !isFormValid!;
+                _isButtonDisable = !isFormValid;
               });
             },
             key: formKey,
@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 24),
                       TextFormField(
                         validator: validateContractName,
-                        autovalidateMode: AutovalidateMode.onUnfocus,
+                        //autovalidateMode: AutovalidateMode.onUnfocus,
                         decoration: InputDecoration(
                           fillColor: Colors.cyan,
                           border: OutlineInputBorder(),
@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 24),
                       TextFormField(
                         validator: validateCost,
-                        autovalidateMode: AutovalidateMode.onUnfocus,
+                        //autovalidateMode: AutovalidateMode.onUnfocus,
                         decoration: InputDecoration(
                           fillColor: Colors.cyan,
                           border: OutlineInputBorder(),
@@ -90,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 24),
                       TextFormField(
                         validator: validateAge,
-                        autovalidateMode: AutovalidateMode.onUnfocus,
+                        //autovalidateMode: AutovalidateMode.onUnfocus,
                         decoration: InputDecoration(
                           fillColor: Colors.cyan,
                           border: OutlineInputBorder(),
@@ -107,10 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   final bool isFormValid = formKey.currentState!
                                       .validate();
                                   if (isFormValid) {
-                                    // Perform login action
-                                    print("Login successful");
-                                  } else {
-                                    print("Login failed");
+                                    // dann irgendwas mit Firebase oder Mock-Datenbank
                                   }
                                 },
                           child: const Text("Login"),
@@ -183,6 +180,9 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     if (int.tryParse(userInput) == null) {
       return "Bitte eine gültige Zahl eingeben";
+    }
+    if (userInput.contains(",")) {
+      return "Bitte keine KOmma, sondern Punkt verwenden";
     }
     if (int.parse(userInput) < 0) {
       return "Bitte eine positive Zahl eingeben";
