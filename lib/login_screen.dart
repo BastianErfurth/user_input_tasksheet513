@@ -69,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: 24),
                       TextFormField(
+                        
                         validator: validateContractName,
                         //autovalidateMode: AutovalidateMode.onUnfocus,
                         decoration: InputDecoration(
